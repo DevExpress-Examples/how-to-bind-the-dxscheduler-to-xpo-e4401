@@ -1,0 +1,68 @@
+﻿<Window x:Class="SchedulerXPOWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduler"
+        xmlns:local="clr-namespace:SchedulerXPOWpf"
+        Title="MainWindow" Height="350" Width="525">
+    
+    <Window.DataContext>
+        <local:SchedulerViewModel />
+    </Window.DataContext>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <dxsch:SchedulerControl Name="schedulerControl1" GroupType="Resource" Grid.ColumnSpan="3">
+            <dxsch:SchedulerControl.Storage>
+                <dxsch:SchedulerStorage AppointmentsChanged="SchedulerStorage_AppointmentsModified"
+                                        AppointmentsInserted="SchedulerStorage_AppointmentsModified"
+                                        AppointmentsDeleted="SchedulerStorage_AppointmentsModified">
+                    <dxsch:SchedulerStorage.AppointmentStorage>
+                        <dxsch:AppointmentStorage DataSource="{Binding Appointments}" ResourceSharing="True">
+                            <dxsch:AppointmentStorage.Mappings>
+                                <dxsch:AppointmentMapping
+                                    Start="Created"
+                                    End="Finish"
+                                    Subject="Subject"
+                                    Description="Description"
+                                    Location="Location"
+                                    AllDay="AllDay"
+                                    Label="Label"
+                                    Status="Status"
+                                    RecurrenceInfo="Recurrence"
+                                    Type="AppointmentType"
+                                    ReminderInfo="Reminder"
+                                    ResourceId="ResourceIds"/>
+                            </dxsch:AppointmentStorage.Mappings>
+                            <dxsch:AppointmentStorage.CustomFieldMappings>
+                                <dxsch:SchedulerCustomFieldMapping Member="Price" Name="cfPrice" ValueType="Decimal"/>
+                            </dxsch:AppointmentStorage.CustomFieldMappings>
+                        </dxsch:AppointmentStorage>
+                    </dxsch:SchedulerStorage.AppointmentStorage>
+                    <dxsch:SchedulerStorage.ResourceStorage>
+                        <dxsch:ResourceStorage DataSource="{Binding Resources}" ColorSaving="ArgbColor">
+                            <dxsch:ResourceStorage.Mappings>
+                                <dxsch:ResourceMapping
+                                    Id="Oid"
+                                    Caption="Name"
+                                    Color="Color"/>
+                            </dxsch:ResourceStorage.Mappings>
+                        </dxsch:ResourceStorage>
+                    </dxsch:SchedulerStorage.ResourceStorage>
+                </dxsch:SchedulerStorage>
+            </dxsch:SchedulerControl.Storage>
+        </dxsch:SchedulerControl>
+
+        <Label Grid.Row="1" Content="Test methods:" HorizontalAlignment="Center" FontSize="20" Foreground="DarkBlue"/>
+        <Button Grid.Row="1" Grid.Column="1" Content="Add New Appointment" Click="btnAddNewAppointment_Click" />
+        <Button Grid.Row="1" Grid.Column="2" Content="Get Source Object" Click="btnGetSourceObject_Click"/>
+    </Grid>
+</Window>
